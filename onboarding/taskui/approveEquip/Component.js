@@ -21,60 +21,59 @@ sap.ui.define([
 			UIComponent.prototype.init.apply(this, arguments);
 			// set the device model
 			this.setModel(models.createDeviceModel(), "device");
-			
+
 			// get task data
 			var startupParameters = this.getComponentData().startupParameters;
 			var taskModel = startupParameters.taskModel;
 			var taskData = taskModel.getData();
 			var taskId = taskData.InstanceID;
-			
+
 			// read process context & bind it to the view's model 
 			var that = this;
-			var jsonModel = new sap.ui.model.json.JSONModel();
+			var contextModel = new sap.ui.model.json.JSONModel("/bpmworkflowruntime/rest/v1/task-instances/" + taskId + "/context");
+			var contextData = contextModel.getData();
 			
-			$.ajax({
-				url:"/bpmworkflowruntime/rest/v1/task-instances/"+taskId+"/context",
-				method: "GET",
-				contentType: "application/json",
-				dataType: "json",
-				success: function(result, xhr, data) {
-					// Get the process context
-					var processContext = new sap.ui.model.json.JSONModel();
-					processContext.context = data.responseJSON;
-					
-					// Get task related data to be set in ObjectHeader
-					processContext.context.task = {};
-					processContext.context.task.Title = taskData.TaskTitle;
-					processContext.context.task.Priority = taskData.Priority;
-					processContext.context.task.Status = taskData.Status;
-
-					if (taskData.Priority === "HIGH") {
-						processContext.context.task.PriorityState = "Warning";
-					} else if (taskData.Priority === "VERY HIGH") {
-						processContext.context.task.PriorityState = "Error";
-					} else {
-						processContext.context.task.PriorityState = "Success";
-					}
-
-					processContext.context.task.CreatedOn = taskData.CreatedOn.toDateString();
-					
-					// get task description and add it to the UI model
-					startupParameters.inboxAPI.getDescription("NA", taskData.InstanceID).done(function(dataDescr){
-						processContext.context.task.Description = dataDescr.Description;
-    					jsonModel.setProperty("/context/task/Description", dataDescr.Description);
-			    	}).
-			    	fail(function(errorText){
-			    		jQuery.sap.require("sap.m.MessageBox");
-			    		sap.m.MessageBox.error(errorText, { title: "Error"}); 
-			    	});
-					
-					jsonModel.setData(processContext);
-					that.setModel(jsonModel);
+			// update the workflow context with task related information
+			// note that this information is not persisted, but is available only when the
+			// particular task UI is loaded
+			
+			// Since the model is loaded asynchronously we add the task related information
+			// in the call back function
+			contextModel.attachRequestCompleted(function() {
+				contextData = contextModel.getData();
+				// Get task related data to be set in UI ObjectHeader
+				contextData.task={};
+				contextData.task.Title = taskData.TaskTitle;
+				contextData.task.Priority = taskData.Priority;
+				contextData.task.Status = taskData.Status;
+				
+				// Set priority 'state' based on the priority
+				if (taskData.Priority === "HIGH") {
+					contextData.task.PriorityState = "Warning";
+				} else if (taskData.Priority === "VERY HIGH") {
+					contextData.task.PriorityState = "Error";
+				} else {
+					contextData.task.PriorityState = "Success";
 				}
+				
+				// Get date on which task was created 
+				contextData.task.CreatedOn = taskData.CreatedOn.toDateString();
+				
+				// Get task description and add it to the UI model
+				startupParameters.inboxAPI.getDescription("NA", taskData.InstanceID).done(function(dataDescr){
+					contextData.task.Description = dataDescr.Description;
+					contextModel.setData(contextData);
+		    	}).fail(function(errorText){
+		    		jQuery.sap.require("sap.m.MessageBox");
+		    		sap.m.MessageBox.error(errorText, { title: "Error"}); 
+		    	});
 			});
 			
+			contextModel.setDefaultBindingMode(sap.ui.model.BindingMode.OneWay);
+			this.setModel(contextModel);
+
 			// Implementation for the confirm actions
-			
+
 			// Reject
 			var oNegativeAction = {
 				sBtnTxt: "Reject",
@@ -84,7 +83,7 @@ sap.ui.define([
 							that._refreshTask, that));
 				}
 			};
-			
+
 			// Accept
 			var oPositiveAction = {
 				sBtnTxt: "Approve",
@@ -94,7 +93,7 @@ sap.ui.define([
 							that._refreshTask, that));
 				}
 			};
-			
+
 			// Add the Accept & Reject buttons
 			startupParameters.inboxAPI.addAction({
 				action: oPositiveAction.sBtnTxt,
@@ -109,7 +108,7 @@ sap.ui.define([
 			}, oNegativeAction.onBtnPressed);
 
 		},
-		
+
 		// This method is called when the end user chooses to accept or reject the equipment proposed
 		_triggerComplete: function(taskId, approvalStatus, refreshTask) {
 			$.ajax({
@@ -122,28 +121,28 @@ sap.ui.define([
 				success: function(result, xhr, data) {
 					// After retrieving the xsrf token successfully
 					var token = data.getResponseHeader("X-CSRF-Token");
-						$.ajax({
-							url:"/bpmworkflowruntime/rest/v1/task-instances/"+taskId,
-							method: "PATCH",
-							contentType: "application/json",
-							// update the context with approval status
-							data: "{ \"status\" :\"COMPLETED\",\"context\": {\"equipApproved\": \"" + approvalStatus + "\" }}",
-							headers: {
-								// pass the xsrf token retrieved earlier
-								"X-CSRF-Token": token
-							},
-							// refreshTask needs to be called on successful completion
-							success: refreshTask
-						});
-					}
+					$.ajax({
+						url: "/bpmworkflowruntime/rest/v1/task-instances/" + taskId,
+						method: "PATCH",
+						contentType: "application/json",
+						// update the context with approval status
+						data: "{ \"status\" :\"COMPLETED\",\"context\": {\"equipApproved\": \"" + approvalStatus + "\" }}",
+						headers: {
+							// pass the xsrf token retrieved earlier
+							"X-CSRF-Token": token
+						},
+						// refreshTask needs to be called on successful completion
+						success: refreshTask
+					});
+				}
 
 			});
 		},
-		
+
 		// Request Inbox to refresh the control once the task is completed
 		_refreshTask: function() {
 			var taskId = this.getComponentData().startupParameters.taskModel.getData().InstanceID;
-    		this.getComponentData().startupParameters.inboxAPI.updateTask("NA", taskId);
+			this.getComponentData().startupParameters.inboxAPI.updateTask("NA", taskId);
 		}
 
 	});

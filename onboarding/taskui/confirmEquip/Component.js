@@ -30,59 +30,59 @@ sap.ui.define([
 			
 			// read process context & bind it to the view's model 
 			var that = this;
-			var jsonModel = new sap.ui.model.json.JSONModel();
-			var prodModel = new sap.ui.model.json.JSONModel();
-			var initModel = new sap.ui.model.json.JSONModel();
+			var contextModel = new sap.ui.model.json.JSONModel("/bpmworkflowruntime/rest/v1/task-instances/" + taskId + "/context");
+			var contextData = contextModel.getData();
 			
-			$.ajax({
-				url:"/bpmworkflowruntime/rest/v1/task-instances/"+taskId+"/context",
-				method: "GET",
-				contentType: "application/json",
-				dataType: "json",
-				success: function(result, xhr, data) {
-					// Get the process context
-					var processContext = new sap.ui.model.json.JSONModel();
-					processContext.context = data.responseJSON;
-					
-					// Initialize data 
-					//TODO: You can replace the static products and call the service to retrive 
-					// product list from your procurement system 
-					prodModel.loadData("/html5apps/onboarding/confirmEquip/model/products.json", null, false);
-					var prodData = prodModel.getData();
-					initModel.loadData("/html5apps/onboarding/confirmEquip/model/init.json", null, false);
-					var initData = initModel.getData();
-					processContext.context.newEquipment = initData;
-					processContext.context.products = prodData;
-					
-					// Get task related data to be set in ObjectHeader
-					processContext.context.task = {};
-					processContext.context.task.Title = taskData.TaskTitle;
-					processContext.context.task.Priority = taskData.Priority;
-					processContext.context.task.Status = taskData.Status;
-
-					if (taskData.Priority === "HIGH") {
-						processContext.context.task.PriorityState = "Warning";
-					} else if (taskData.Priority === "VERY HIGH") {
-						processContext.context.task.PriorityState = "Error";
-					} else {
-						processContext.context.task.PriorityState = "Success";
-					}
-
-					processContext.context.task.CreatedOn = taskData.CreatedOn.toDateString();
-					
-					// get task description and add it to the UI model
-					startupParameters.inboxAPI.getDescription("NA", taskData.InstanceID).done(function(dataDescr){
-						processContext.context.task.Description = dataDescr.Description;
-    					jsonModel.setProperty("/context/task/Description", dataDescr.Description);
-			    	}).
-			    	fail(function(errorText){
-			    		jQuery.sap.require("sap.m.MessageBox");
-			    		sap.m.MessageBox.error(errorText, { title: "Error"}); 
-			    	});
-					
-					jsonModel.setData(processContext);
-					that.setModel(jsonModel);
+			// Load product list from a locally available json model
+			//You can replace the static products and call the service to retrive
+			// product list from your procurement system
+			var prodModel = new sap.ui.model.json.JSONModel();
+			prodModel.loadData("/html5apps/onboarding/confirmEquip/model/products.json", null, false);
+			var initModel = new sap.ui.model.json.JSONModel();
+			initModel.loadData("/html5apps/onboarding/confirmEquip/model/init.json", null, false);
+			
+			contextModel.setDefaultBindingMode(sap.ui.model.BindingMode.OneWay);
+			this.setModel(contextModel);
+			
+			// update the workflow context with task related information
+			// note that this information is not persisted, but is available only when the
+			// particular task UI is loaded
+			
+			// Since the model is loaded asynchronously we add the task related information
+			// in the call back function
+			contextModel.attachRequestCompleted(function() {
+				contextData = contextModel.getData();
+				
+				// Set product list to the model 
+				contextData.newEquipment = initModel.getData();
+				contextData.products = prodModel.getData();
+				
+				// Get task related data to be set in UI ObjectHeader
+				contextData.task={};
+				contextData.task.Title = taskData.TaskTitle;
+				contextData.task.Priority = taskData.Priority;
+				contextData.task.Status = taskData.Status;
+				
+				// Set priority 'state' based on the priority
+				if (taskData.Priority === "HIGH") {
+					contextData.task.PriorityState = "Warning";
+				} else if (taskData.Priority === "VERY HIGH") {
+					contextData.task.PriorityState = "Error";
+				} else {
+					contextData.task.PriorityState = "Success";
 				}
+				
+				// Get date on which task was created 
+				contextData.task.CreatedOn = taskData.CreatedOn.toDateString();
+				
+				// Get task description and add it to the UI model
+				startupParameters.inboxAPI.getDescription("NA", taskData.InstanceID).done(function(dataDescr){
+					contextData.task.Description = dataDescr.Description;
+					contextModel.setData(contextData);
+		    	}).fail(function(errorText){
+		    		jQuery.sap.require("sap.m.MessageBox");
+		    		sap.m.MessageBox.error(errorText, { title: "Error"}); 
+		    	});
 			});
 			
 			// Implementation for the confirm action
@@ -91,7 +91,7 @@ sap.ui.define([
 				onBtnPressed: function(e) {
 					var model = that.getModel();
 					model.refresh(true);
-					var processContext = model.getData().context;
+					var processContext = model.getData();
 					// Get the equipment list as a JSON string
 					var equip = JSON.stringify(processContext.equipment);
 					// Call a local method to perform further action
@@ -131,7 +131,7 @@ sap.ui.define([
 					
 					$.ajax({
 						// Call workflow API to complete the task
-						url:"/bpmworkflowruntime/rest/v1/task-instances/"+taskId,
+						url:"/bpmworkflowruntime/rest/v1/task-instances/" + taskId,
 						method: "PATCH",
 						contentType: "application/json",
 						// pass the updated context to the API
