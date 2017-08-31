@@ -1,5 +1,5 @@
 # SAP Cloud Platform Workflow Extension for SuccessFactors New Hire Onboarding
-This sample project contains the SAPUI5 application used for the user tasks and a sample workflow which you can readily consume to extend the SuccessFactors new hire Onboarding scenario. This scenario is explained in detail in the following SCN Blogs:
+This sample project contains the SAPUI5 application used for the user tasks and a workflow model which you can use to readily extend the SAP SuccessFactors new hire Onboarding scenario. This scenario is explained in detail in the following SCN Blogs:
 
 [Extend SuccessFactors with SAP Cloud Platform Workflow - Part 1/2](https://blogs.sap.com/2017/08/19/extend-successfactors-with-sap-cloud-platform-workflow-part-12/)
 
