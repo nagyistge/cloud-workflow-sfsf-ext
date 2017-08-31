@@ -1,18 +1,21 @@
-<mvc:View controllerName="com.sap.cloud.workflow.samples.onbequip.controller.ConfirmEquipment" 
+<mvc:View
+	controllerName="com.sap.cloud.workflow.samples.onbequip.controller.ConfirmEquipment"
 	xmlns:html="http://www.w3.org/1999/xhtml" xmlns:mvc="sap.ui.core.mvc"
-	xmlns="sap.m" xmlns:f="sap.ui.layout.form" xmlns:l="sap.ui.layout" xmlns:core="sap.ui.core">
+	xmlns="sap.m" xmlns:f="sap.ui.layout.form" xmlns:l="sap.ui.layout"
+	xmlns:core="sap.ui.core">
 	<App height="90%">
 		<pages>
 			<Page title="{i18n>title}" showHeader="false" showFooter="false">
 				<content>
-					<ObjectHeader title="{/context/task/Title}" titleActive="false" id="__header0">
+					<ObjectHeader title="{/task/Title}" titleActive="false"
+						id="__header0">
 						<attributes>
-							<ObjectAttribute title="{i18n>createdOn}" text="{/context/task/CreatedOn}"/>
-							<ObjectAttribute title="{i18n>description}" text="{/context/task/Description}"/>
+							<ObjectAttribute title="{i18n>createdOn}" text="{/task/CreatedOn}" />
+							<ObjectAttribute title="{i18n>description}" text="{/task/Description}" />
 						</attributes>
 						<statuses>
-							<ObjectStatus text="{/context/task/Status}" state="None"/>
-							<ObjectStatus text="{/context/task/Priority}" state="{/context/task/PriorityState}"/>
+							<ObjectStatus text="{/task/Status}" state="None" />
+							<ObjectStatus text="{/task/Priority}" state="{/task/PriorityState}" />
 						</statuses>
 					</ObjectHeader>
 					<IconTabBar selectedKey="__filter0" id="__bar0">
@@ -25,23 +28,25 @@
 												<l:VerticalLayout id="hLayout12">
 													<HBox width="100%" id="__hbox0">
 														<l:HorizontalLayout id="hLayoutJob1">
-															<f:Form >
+															<f:Form>
 																<f:layout>
-																	<f:GridLayout singleColumn="true"/>
+																	<f:GridLayout singleColumn="true" />
 																</f:layout>
-																<f:FormContainer expanded="true" title="{i18n>persInfo}" expandable="false">
+																<f:FormContainer expanded="true"
+																	title="{i18n>persInfo}" expandable="false">
 																	<f:formElements>
 																		<f:FormElement label="{i18n>empID}">
-																			<Text text="{/context/empData/d/results/0/userId}"/>
+																			<Text text="{/empData/d/results/0/userId}" />
 																		</f:FormElement>
 																		<f:FormElement label="{i18n>firstName}">
-																			<Text text="{/context/empData/d/results/0/firstName}"/>
+																			<Text text="{/empData/d/results/0/firstName}" />
 																		</f:FormElement>
 																		<f:FormElement label="{i18n>lastName}">
-																			<Text text="{/context/empData/d/results/0/lastName}"/>
+																			<Text text="{/empData/d/results/0/lastName}" />
 																		</f:FormElement>
 																		<f:FormElement label="{i18n>address}">
-																			<Text text="{/context/empData/d/results/0/addressLine1}, {/context/empData/d/results/0/city}, {/context/empData/d/results/0/country}"/>
+																			<Text
+																				text="{/empData/d/results/0/addressLine1}, {/empData/d/results/0/city}, {/empData/d/results/0/country}" />
 																		</f:FormElement>
 																	</f:formElements>
 																</f:FormContainer>
@@ -49,23 +54,26 @@
 														</l:HorizontalLayout>
 														<VBox id="VBoxJob1">
 															<l:HorizontalLayout id="hLayoutJob2">
-																<f:Form >
+																<f:Form>
 																	<f:layout>
-																		<f:GridLayout singleColumn="true"/>
+																		<f:GridLayout singleColumn="true" />
 																	</f:layout>
-																	<f:FormContainer expanded="true" title="{i18n>jobInfo}">
+																	<f:FormContainer expanded="true"
+																		title="{i18n>jobInfo}">
 																		<f:formElements>
 																			<f:FormElement label="{i18n>legalEntity}">
-																				<Text text="{/context/empData/d/results/0/empInfo/jobInfoNav/results/0/company}"/>
+																				<Text
+																					text="{/empData/d/results/0/empInfo/jobInfoNav/results/0/company}" />
 																			</f:FormElement>
 																			<f:FormElement label="{i18n>jobCode}">
-																				<Text text="{/context/empData/d/results/0/jobCode}"/>
+																				<Text text="{/empData/d/results/0/jobCode}" />
 																			</f:FormElement>
 																			<f:FormElement label="{i18n>jobTitle}">
-																				<Text text="{/context/empData/d/results/0/empInfo/jobInfoNav/results/0/jobTitle}"/>
+																				<Text
+																					text="{/empData/d/results/0/empInfo/jobInfoNav/results/0/jobTitle}" />
 																			</f:FormElement>
 																			<f:FormElement label="{i18n>workLocation}">
-																				<Text text="{/context/empData/d/results/0/location}"/>
+																				<Text text="{/empData/d/results/0/location}" />
 																			</f:FormElement>
 																		</f:formElements>
 																	</f:FormContainer>
@@ -73,37 +81,40 @@
 															</l:HorizontalLayout>
 														</VBox>
 													</HBox>
-													<Table id="idEquipTable" inset="false" mode="Delete" delete="deleteRow" noDataText="{i18n>noDataText}"
-														items="{path:'/context/equipment/EquipmentsInfo', sorter : { path: 'EquipmentType'}}">
+													<Table id="idEquipTable" inset="false" mode="Delete"
+														delete="deleteRow" noDataText="{i18n>noDataText}"
+														items="{path:'/equipment/EquipmentsInfo', sorter : { path: 'EquipmentType'}}">
 														<headerToolbar>
 															<Toolbar>
-																<Title text="{i18n>tableTitle}" level="H3"/>
+																<Title text="{i18n>tableTitle}" level="H3" />
 																<ToolbarSpacer></ToolbarSpacer>
-																<Button icon="sap-icon://add" tooltip="{18n>Add new Equipment}" press="onAddEquipment" visible="true"/>
+																<Button icon="sap-icon://add" tooltip="{18n>Add new Equipment}"
+																	press="onAddEquipment" visible="true" />
 															</Toolbar>
 														</headerToolbar>
 														<columns>
 															<Column width="12em">
-																<Text text="{i18n>equipType}"/>
+																<Text text="{i18n>equipType}" />
 															</Column>
 															<Column minScreenWidth="Tablet" demandPopin="true">
-																<Text text="{i18n>equipDesc}"/>
+																<Text text="{i18n>equipDesc}" />
 															</Column>
 															<Column minScreenWidth="Tablet" demandPopin="true">
-																<Text text="{i18n>equipReqLoc}"/>
+																<Text text="{i18n>equipReqLoc}" />
 															</Column>
 															<Column hAlign="Right">
-																<Text text="{i18n>equipPrice}"/>
+																<Text text="{i18n>equipPrice}" />
 															</Column>
 														</columns>
 														<items>
 															<ColumnListItem>
 																<cells>
-																	<Text text="{EquipmentType}"/>
-																	<ObjectIdentifier title="{ProdDesc}"/>
-																	<Input value="{RequestedLoc}" editable="true"/>
-																	<ObjectNumber number="{ parts:[{path:'Price'},{path:'Currency'}], type: 'sap.ui.model.type.Currency', formatOptions: {showMeasure: false}}"
-																		unit="{Currency}"/>
+																	<Text text="{EquipmentType}" />
+																	<ObjectIdentifier title="{ProdDesc}" />
+																	<Input value="{RequestedLoc}" editable="true" />
+																	<ObjectNumber
+																		number="{ parts:[{path:'Price'},{path:'Currency'}], type: 'sap.ui.model.type.Currency', formatOptions: {showMeasure: false}}"
+																		unit="{Currency}" />
 																</cells>
 															</ColumnListItem>
 														</items>
@@ -114,50 +125,58 @@
 									</l:HorizontalLayout>
 								</content>
 							</IconTabFilter>
-							<IconTabFilter icon="sap-icon://employee-lookup" id="__filter1" visible="true">
+							<IconTabFilter icon="sap-icon://employee-lookup"
+								id="__filter1" visible="true">
 								<content>
 									<FlexBox width="100%" id="__box1">
 										<items>
 											<HBox width="100%" id="__hbox1">
-												<f:Form >
+												<f:Form>
 													<f:layout>
-														<f:GridLayout singleColumn="true"/>
+														<f:GridLayout singleColumn="true" />
 													</f:layout>
-													<f:FormContainer expanded="true" title="{i18n>empDetails}" expandable="false">
+													<f:FormContainer expanded="true"
+														title="{i18n>empDetails}" expandable="false">
 														<f:formElements>
 															<f:FormElement label="{i18n>company}">
-																<Text text="{/context/empData/d/results/0/empInfo/jobInfoNav/results/0/company}"/>
+																<Text
+																	text="{/empData/d/results/0/empInfo/jobInfoNav/results/0/company}" />
 															</f:FormElement>
 															<f:FormElement label="{i18n>Region}">
-																<Text text="{/context/empData/d/results/0/location}"/>
+																<Text text="{/empData/d/results/0/location}" />
 															</f:FormElement>
 															<f:FormElement label="{i18n>fullTime}">
-																<Text text="{/context/empData/d/results/0/empInfo/jobInfoNav/results/0/isFulltimeEmployee}"/>
+																<Text
+																	text="{/empData/d/results/0/empInfo/jobInfoNav/results/0/isFulltimeEmployee}" />
 															</f:FormElement>
 															<f:FormElement label="{i18n>position}">
-																<Text text="{/context/empData/d/results/0/empInfo/jobInfoNav/results/0/position}"/>
+																<Text
+																	text="{/empData/d/results/0/empInfo/jobInfoNav/results/0/position}" />
 															</f:FormElement>
 														</f:formElements>
 													</f:FormContainer>
 												</f:Form>
 												<VBox id="VBoxEmp1">
-													<f:Form >
+													<f:Form>
 														<f:layout>
-															<f:GridLayout singleColumn="true"/>
+															<f:GridLayout singleColumn="true" />
 														</f:layout>
-														<f:FormContainer expanded="true" title="{i18n>unitInfo}" expandable="false">
+														<f:FormContainer expanded="true"
+															title="{i18n>unitInfo}" expandable="false">
 															<f:formElements>
 																<f:FormElement label="{i18n>costCenter}">
-																	<Text text="{/context/empData/d/results/0/empInfo/jobInfoNav/results/0/costCenter}"/>
+																	<Text
+																		text="{/empData/d/results/0/empInfo/jobInfoNav/results/0/costCenter}" />
 																</f:FormElement>
 																<f:FormElement label="{i18n>division}">
-																	<Text text="{/context/empData/d/results/0/division}"/>
+																	<Text text="{/empData/d/results/0/division}" />
 																</f:FormElement>
 																<f:FormElement label="{i18n>department}">
-																	<Text text="{/context/empData/d/results/0/department}"/>
+																	<Text text="{/empData/d/results/0/department}" />
 																</f:FormElement>
 																<f:FormElement label="{i18n>businessUnit}">
-																	<Text text="{/context/empData/d/results/0/empInfo/jobInfoNav/results/0/businessUnit}"/>
+																	<Text
+																		text="{/empData/d/results/0/empInfo/jobInfoNav/results/0/businessUnit}" />
 																</f:FormElement>
 															</f:formElements>
 														</f:FormContainer>

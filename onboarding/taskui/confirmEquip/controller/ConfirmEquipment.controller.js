@@ -17,10 +17,10 @@ sap.ui.define(["sap/m/MessageToast",
 			var oModel = oEvent.getSource().getModel();
 			var data = oModel.getData();
 
-			if (data.context.newEquipment.EquipmentType === "") {
-				data.context.newEquipment.EquipmentType = data.context.products.equipmentTypes[0].text;
-				data.context.newEquipment.ProdDesc = data.context.products.equipmentForTypeNot[0].text;
-				data.context.newEquipment.RequestedLoc = data.context.products.deliveryLocations[0].text;
+			if (data.newEquipment.EquipmentType === "") {
+				data.newEquipment.EquipmentType = data.products.equipmentTypes[0].text;
+				data.newEquipment.ProdDesc = data.products.equipmentForTypeNot[0].text;
+				data.newEquipment.RequestedLoc = data.products.deliveryLocations[0].text;
 			}
 
 			oModel.setData(data);
@@ -30,49 +30,49 @@ sap.ui.define(["sap/m/MessageToast",
 			var selItem = oevt.getParameters().selectedItem.getText();
 			var data = oevt.getSource().getModel().getData();
 
-			data.context.newEquipment.EquipmentType = selItem;
+			data.newEquipment.EquipmentType = selItem;
 
 			if (selItem === "Notebook") {
-				data.context.products.equipmentForType = data.context.products.equipmentForTypeNot;
-				data.context.newEquipment.ProdDesc = data.context.products.equipmentForTypeNot[0].text;
+				data.products.equipmentForType = data.products.equipmentForTypeNot;
+				data.newEquipment.ProdDesc = data.products.equipmentForTypeNot[0].text;
 			} else if (selItem === "Cables and Accessories") {
-				data.context.products.equipmentForType = data.context.products.equipmentForTypeCbl;
-				data.context.newEquipment.ProdDesc = data.context.products.equipmentForTypeCbl[0].text;
+				data.products.equipmentForType = data.products.equipmentForTypeCbl;
+				data.newEquipment.ProdDesc = data.products.equipmentForTypeCbl[0].text;
 			} else if (selItem === "Monitor") {
-				data.context.products.equipmentForType = data.context.products.equipmentForTypeMon;
-				data.context.newEquipment.ProdDesc = data.context.products.equipmentForTypeMon[0].text;
+				data.products.equipmentForType = data.products.equipmentForTypeMon;
+				data.newEquipment.ProdDesc = data.products.equipmentForTypeMon[0].text;
 			} else if (selItem === "Audio and Video") {
-				data.context.products.equipmentForType = data.context.products.equipmentForTypeAaV;
-				data.context.newEquipment.ProdDesc = data.context.products.equipmentForTypeAaV[0].text;
+				data.products.equipmentForType = data.products.equipmentForTypeAaV;
+				data.newEquipment.ProdDesc = data.products.equipmentForTypeAaV[0].text;
 			} else if (selItem === "Smartphone") {
-				data.context.products.equipmentForType = data.context.products.equipmentForTypeMob;
-				data.context.newEquipment.ProdDesc = data.context.products.equipmentForTypeMob[0].text;
+				data.products.equipmentForType = data.products.equipmentForTypeMob;
+				data.newEquipment.ProdDesc = data.products.equipmentForTypeMob[0].text;
 			} else {
-				data.context.products.equipmentForType = data.context.products.equipmentForTypeOth;
-				data.context.newEquipment.ProdDesc = data.context.products.equipmentForTypeOth[0].text;
+				data.products.equipmentForType = data.products.equipmentForTypeOth;
+				data.newEquipment.ProdDesc = data.products.equipmentForTypeOth[0].text;
 			}
 
-			data.context.newEquipment.EquipmentType = selItem;
+			data.newEquipment.EquipmentType = selItem;
 			oevt.getSource().getModel().setData(data);
 		},
 		onLocSelChange: function(oevt) {
 			var data = oevt.getSource().getModel().getData();
-			data.context.newEquipment.RequestedLoc = oevt.getParameters().selectedItem.getText();
+			data.newEquipment.RequestedLoc = oevt.getParameters().selectedItem.getText();
 		},
 		onEquipSelChange: function(oevt) {
 			var data = oevt.getSource().getModel().getData();
-			data.context.newEquipment.ProdDesc = oevt.getParameters().selectedItem.getText();
+			data.newEquipment.ProdDesc = oevt.getParameters().selectedItem.getText();
 		},
 		onCancelEquipment: function(oEvt) {
 			this.oDialog.close();
 		},
 		deleteRow: function(oEvt) {
-			var path = oEvt.getParameter('listItem').getBindingContext().getPath();
+			var path = oEvt.getParameter("listItem").getBindingContext().getPath();
 			// radix paramter to parseint into decimal and not octal :)
-			var indexToRemove = parseInt(path.substring(path.lastIndexOf('/') + 1), 10);
+			var indexToRemove = parseInt(path.substring(path.lastIndexOf("/") + 1 ), 10);
 			var oModel = oEvt.getSource().getModel();
 			var data = oModel.getData();
-			data.context.equipment.EquipmentsInfo.splice(indexToRemove, 1);
+			data.equipment.EquipmentsInfo.splice(indexToRemove, 1);
 			oModel.setData(data);
 
 			MessageToast.show("Item Removed");
@@ -81,13 +81,13 @@ sap.ui.define(["sap/m/MessageToast",
 			var oModel = oEvent.getSource().getModel();
 			var data = oModel.getData();
 
-			var ProdDesc = data.context.newEquipment.ProdDesc;
-			var RequestedLoc = data.context.newEquipment.RequestedLoc;
+			var ProdDesc = data.newEquipment.ProdDesc;
+			var RequestedLoc = data.newEquipment.RequestedLoc;
 			var EquipmentType;
 			var Price;
-			var Currency = data.context.newEquipment.Currency;
+			var Currency = data.newEquipment.Currency;
 			var ProductID;
-			var equipList = data.context.products.equipmentList;
+			var equipList = data.products.equipmentList;
 
 			for (var i in equipList) {
 				if (equipList[i].ProdDesc === ProdDesc) {
@@ -107,10 +107,10 @@ sap.ui.define(["sap/m/MessageToast",
 				ExpectedDate:""
 			};
 
-			if (typeof(data.context.equipment.EquipmentsInfo) === "undefined") {
-				data.context.equipment.EquipmentsInfo = [];
+			if (typeof(data.equipment.EquipmentsInfo) === "undefined") {
+				data.equipment.EquipmentsInfo = [];
 			}
-			data.context.equipment.EquipmentsInfo.push(newItem);
+			data.equipment.EquipmentsInfo.push(newItem);
 			oModel.setData(data);
 			oModel.refresh(true);
 			this.oDialog.close();
@@ -118,7 +118,6 @@ sap.ui.define(["sap/m/MessageToast",
 
 	});
 });
-
 
 
 
