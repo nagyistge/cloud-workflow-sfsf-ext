@@ -7,6 +7,18 @@ This sample project contains the SAPUI5 application used for the user tasks and 
 
 [Extend SAP SuccessFactors with SAP Cloud Platform Workflow - Part 2/2](https://blogs.sap.com/2017/08/22/extend-successfactors-with-sap-cloud-platform-workflow-part-22/)
 
+## **Solution Diagram**
+![Solution Diagram](https://github.com/SAP/cloud-workflow-sfsf-ext/blob/master/onboarding/images/onboardingSolutionDiagram.png?raw=true)
+
+As soon as there is a New Hire event in the SAP SuccessFactors,
+1. New hire event triggered. A buddy is assigned as part of the standard process.
+2. This calls the configured SuccessFactors intelligent service which starts the custom extension realized by SAP Cloud Platform Workflow service.
+3. Technically SAP Cloud Integration service takes care of the X-CSRF token and any needed context mapping. The SuccessFactors Intelligent service maps the context of new hire to the SAP Cloud service then triggers SAP Cloud Platform Workflow service.
+4. SAP Cloud Platform Workflow service runtime makes a call to SAP SuccessFactors system to get the new employee details and a list of potential buddies from the team he will join hire and his buddy data.
+5. SAP Cloud Platform Workflow service sends details of the new hire (company location, role etc…) to SAP Cloud Platform Business Rules service to get back the equipment list for this new hire.
+6. Buddy logs onto the Fiori launchpad to access his tasks in the My Inbox application.
+7. He sees he has a new task in his inbox for him to process the equipment assignment for the new hire.
+8. The buddy’s decision to confirm or change the equipment is submitted to the workflow to be further processed
 
 ## **Getting Started with Sample Workflow**
 These instructions will get you the sample Onboarding extension workflow model up and running in your landscape.
