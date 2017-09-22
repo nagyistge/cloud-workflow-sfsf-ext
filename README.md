@@ -1,11 +1,11 @@
-# SAP Cloud Platform Workflow Extension for SuccessFactors New Hire Onboarding
+# SAP Cloud Platform Workflow Extension for SAP SuccessFactors New Hire Onboarding
 This sample project contains the SAPUI5 application used for the user tasks and a workflow model which you can use to readily extend the SAP SuccessFactors new hire Onboarding scenario. This scenario is explained in detail in the following SCN Blogs:
 
 ![Workflow Model](https://github.com/SAP/cloud-workflow-sfsf-ext/blob/master/onboarding/images/workflow.jpg?raw=true)
 
-[Extend SuccessFactors with SAP Cloud Platform Workflow - Part 1/2](https://blogs.sap.com/2017/08/19/extend-successfactors-with-sap-cloud-platform-workflow-part-12/)
+[Extend SAP SuccessFactors with SAP Cloud Platform Workflow - Part 1/2](https://blogs.sap.com/2017/08/19/extend-successfactors-with-sap-cloud-platform-workflow-part-12/)
 
-[Extend SuccessFactors with SAP Cloud Platform Workflow - Part 2/2](https://blogs.sap.com/2017/08/22/extend-successfactors-with-sap-cloud-platform-workflow-part-22/)
+[Extend SAP SuccessFactors with SAP Cloud Platform Workflow - Part 2/2](https://blogs.sap.com/2017/08/22/extend-successfactors-with-sap-cloud-platform-workflow-part-22/)
 
 
 ## **Getting Started with Sample Workflow**
@@ -34,7 +34,7 @@ Download or clone the following content from the git repository:
 #### **Creating Destinations in SAP Cloud Platform**
 [To be done by an Administrator]
 
-Before you import the downloaded .zip files, you have to create the destination for connecting to SuccessFactors from SAP Cloud Platform. Create a destination with name **SFSF** to connect to SuccessFactors as shown in the image below. This destination will be used in the Workflow model.
+Before you import the downloaded .zip files, you have to create the destination for connecting to SAP SuccessFactors from SAP Cloud Platform. Create a destination with name **SFSF** to connect to SAP SuccessFactors as shown in the image below. This destination will be used in the Workflow model.
 
 ![SAP Cloud Platform Destination](https://github.com/SAP/cloud-workflow-sfsf-ext/blob/master/onboarding/images/Destination.jpg)
 	
@@ -59,7 +59,7 @@ Follow [the document](https://github.com/SAP/cloud-workflow-sfsf-ext/blob/master
 
 > Note: If you do not have any procurement API to work with, for experiencing workflows, you can remove the *Order Equipment* service task and proceed.
 
-**Different IdP:** Since the co-workers userId is as available in SuccessFactors, assigning them to the recipient of the approval task will make no sense if the same user id is not available in Cloud Platform. So, if the SAP Cloud Platform and SuccessFactors use different Identity Providers for authentication, then the mapping between the users in SAP Cloud Platform and SuccessFactors needs to be performed for productive usages. For testing purposes, you could modify the *Recipients* property of the following user tasks in Workflow to a user in SAP Cloud Platform. 
+**Different IdP:** Since the co-workers userId is as available in SAP SuccessFactors, assigning them to the recipient of the approval task will make no sense if the same user id is not available in SAP Cloud Platform. So, if the SAP Cloud Platform and SAP SuccessFactors use different Identity Providers for authentication, then the mapping between the users in SAP Cloud Platform and SAP SuccessFactors needs to be performed for productive usages. For testing purposes, you could modify the *Recipients* property of the following user tasks in Workflow to a user in SAP Cloud Platform. 
 1. Change or Confirm equipment.
 2. Approve Equipment.
 3. Accept Workplace for New Hire.
@@ -75,7 +75,7 @@ As explained in the [blog](https://blogs.sap.com/2017/08/19/extend-successfactor
 
 The procedure is explained in detail in the section *Managing Workflow Definitions* in the [help document](https://uacp2.hana.ondemand.com/viewer/aa302ee52d3a4420b6cc3ecaaeee2ee7/Cloud/en-US/e6163e119ba645d0ae6a31022b670381.html).
 
-The initial context required by this workflow model is the user id of the new hire in SuccessFactors (userId). The workflowdefinitionId is displayed under property section in the workflow editor.
+The initial context required by this workflow model is the user id of the new hire in SAP SuccessFactors (userId). The workflowdefinitionId is displayed under property section in the workflow editor.
 #### Sample Payload 
 
     {
