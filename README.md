@@ -42,6 +42,7 @@ Download or clone the following content from the git repository:
 2. onboarding -> workflowmodel -> SFSFOnboardingWorkflow.zip
 
 ### **Deployment**
+> Note: If you would like to experience the workflow service without connecting to the actual backend systems, you could use the [mock service](https://github.com/SAP/cloud-workflow-sfsf-ext/blob/master/onboarding/MockService/README.md) available in this project.
 
 #### **Creating Destinations in SAP Cloud Platform**
 [To be done by an Administrator]
@@ -70,6 +71,8 @@ Follow [the document](https://github.com/SAP/cloud-workflow-sfsf-ext/blob/master
 4. After saving the workflow, right-click the *SuccessFactorsOnboarding.workflow* and choose *Deploy* -> *Deploy to SAP Cloud Platform Workflow*.
 
 > Note: If you do not have any procurement API to work with, for experiencing workflows, you can remove the *Order Equipment* service task and proceed.
+
+> Note: If you would like to experience the workflow service without connecting to the actual backend systems, you could use the [mock service](https://github.com/SAP/cloud-workflow-sfsf-ext/blob/master/onboarding/MockService/README.md) available in this project.
 
 **Different IdP:** Since the co-workers userId is as available in SAP SuccessFactors, assigning them to the recipient of the approval task will make no sense if the same user id is not available in SAP Cloud Platform. So, if the SAP Cloud Platform and SAP SuccessFactors use different Identity Providers for authentication, then the mapping between the users in SAP Cloud Platform and SAP SuccessFactors needs to be performed for productive usages. For testing purposes, you could modify the *Recipients* property of the following user tasks in Workflow to a user in SAP Cloud Platform. 
 1. Change or Confirm equipment.
@@ -140,6 +143,8 @@ This is the final task in the Onboarding extension process, where the co-worker 
 ## **Known Issues**
 No known issues at the moment
 
+## **Coming Soon**
+Importing Business Rules.
 
 ## **License**
 Copyright (c) 2017 SAP SE. All rights reserved.
